@@ -13,15 +13,20 @@ class SystemTest extends TestCase{
     private $baseUrl = 'http://localhost:8000';
 
     protected function setUp(): void{
-        // Mengarahkan ke server ChromeDriver lokal / GitHub Actions
-        $host = 'http://localhost:9515';
+        $host = 'http://localhost:9515/wd/hub';
 
         $chromeOptions = new ChromeOptions();
-        // Mode Headless sangat krusial agar tidak error saat berjalan di GitHub Actions
-        $chromeOptions->addArguments(['--headless', '--disable-gpu', '--no-sandbox']);
+        $chromeOptions->addArguments([
+            '--headless',
+            '--disable-gpu',
+            '--no-sandbox'
+        ]);
 
         $capabilities = DesiredCapabilities::chrome();
-        $capabilities->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
+        $capabilities->setCapability(
+            ChromeOptions::CAPABILITY,
+            $chromeOptions
+        );
 
         $this->driver = RemoteWebDriver::create($host, $capabilities);
     }
